@@ -6,17 +6,17 @@ before_install:
   - docker build -t /react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run -e CI=true "$DOCKER_ID"/react-test npm test
+  - docker run -e CI=true ehog213/react-test npm test
 
 after_success:
-  - docker build -t "$DOCKER_ID"/multi-client ./client
-  - docker build -t "$DOCKER_ID"/multi-nginx ./nginx
-  - docker build -t "$DOCKER_ID"/multi-server ./server
-  - docker build -t "$DOCKER_ID"/multi-worker ./worker
+  - docker build -t ehog213/multi-client ./client
+  - docker build -t ehog213/multi-nginx ./nginx
+  - docker build -t ehog213/multi-server ./server
+  - docker build -t ehog213/multi-worker ./worker
   # Log into the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take build images and push them to docker hub
-  - docker push "$DOCKER_ID"/multi-client
-  - docker push "$DOCKER_ID"/multi-nginx
-  - docker push "$DOCKER_ID"/multi-server
-  - docker push "$DOCKER_ID"/multi-worker
+  - docker push ehog213/multi-client
+  - docker push ehog213/multi-nginx
+  - docker push ehog213/multi-server
+  - docker push ehog213/multi-worker
