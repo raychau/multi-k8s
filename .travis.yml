@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t raychau/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true raychau/react-test npm test
+
+after_success:
+  - docker build -t raychau/multi-client ./client
+  - docker build -t raychau/multi-nginx ./nginx
+  - docker build -t raychau/multi-server ./server
+  - docker build -t raychau/multi-worker ./worker
+  # Log into the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take build images and push them to docker hub
+  - docker push raychau/multi-client
+  - docker push raychau/multi-nginx
+  - docker push raychau/multi-server
+  - docker push raychau/multi-worker
