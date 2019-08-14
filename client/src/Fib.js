@@ -9,6 +9,8 @@ class Fib extends Component {
     };
 
     componentDidMount() {
+        document.title = "Fib Values version 2"
+
         this.fetchValues();
         this.fetchIndexes();
     }
